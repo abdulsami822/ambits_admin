@@ -4,14 +4,23 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Profile from "@/models/profile";
 import UserTables from "./components/UsersTable";
 import useSWRMutation from "swr/mutation";
-import useSWR from "swr";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pageIndexParam = searchParams.get("page");
+  if (!pageIndexParam) {
+    router.push("/users?page=1");
+  }
   const supabase = createClientComponentClient();
 
   const onChange = async (key, { arg }) => {
     const { pagination, sorting, columnFilters } = arg;
     const { pageIndex, pageSize } = pagination;
+    if (typeof pageIndex === "number" && +pageIndexParam !== pageIndex + 1) {
+      router.push(`/users?page=${pageIndex + 1}`);
+    }
     const offset = pageIndex * pageSize;
     const sortColumn = sorting?.length
       ? sorting[0]
@@ -54,6 +63,9 @@ export default function Page() {
         onChange={trigger}
         totalCount={profileData?.totalCount}
         loading={isMutating}
+        initialPaginationConfig={{
+          pageIndex: pageIndexParam ?? 0,
+        }}
       />
     </div>
   );

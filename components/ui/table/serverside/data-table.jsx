@@ -45,9 +45,12 @@ export default function ServerDataTable({
   data,
   loading,
   filterColumnConfig,
+  initialPaginationConfig,
 }) {
   const [pagination, setPagination] = useState({
-    pageIndex: 0,
+    pageIndex: initialPaginationConfig?.pageIndex
+      ? parseInt(initialPaginationConfig?.pageIndex) - 1
+      : 0,
     pageSize: 10,
   });
 
