@@ -23,7 +23,7 @@ export default function Page() {
       const filterColumn = columnFilters[0];
       const { data, count } = await supabase
         .from("profile")
-        .select("*", { count: "exact", head: true })
+        .select("*", { count: "exact" })
         .range(offset, offset + pageSize)
         .order(Profile.keyMap[sortColumn.id], { ascending: !sortColumn.desc })
         .ilike(filterColumn.id, `%${filterColumn.value}%`);
@@ -32,7 +32,7 @@ export default function Page() {
     } else {
       const { data, count } = await supabase
         .from("profile")
-        .select("*", { count: "exact", head: true })
+        .select("*", { count: "exact" })
         .range(offset, offset + pageSize)
         .order(Profile.keyMap[sortColumn.id], { ascending: !sortColumn.desc });
       results = data;
