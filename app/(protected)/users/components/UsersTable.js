@@ -3,8 +3,12 @@
 import React from "react";
 import ServerDataTable from "@/components/ui/table/serverside/data-table.jsx";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, ExternalLink } from "lucide-react";
 import { DateTime } from "luxon";
+import Link from "next/link";
+import { GET_USERS_DETAILS_PAGE } from "@/constants/routes.constants";
+import { Text } from "@radix-ui/themes";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
 
 const columns = [
   {
@@ -21,7 +25,14 @@ const columns = [
       );
     },
     cell: (info) => {
-      return <div>{info.getValue() || "N/A"}</div>;
+      return (
+        <Link href={GET_USERS_DETAILS_PAGE(info.row.original.userId)}>
+          <Text color="indigo" className="flex items-center gap-1">
+            {info.getValue() || "N/A"}
+            <ExternalLinkIcon />
+          </Text>
+        </Link>
+      );
     },
   },
   {
@@ -47,6 +58,13 @@ const columns = [
   },
 
   {
+    accessorKey: "role",
+    header: "Role",
+    cell: (info) => {
+      return <div>{info.getValue() || "N/A"}</div>;
+    },
+  },
+  {
     accessorKey: "createdAt",
     header: ({ column }) => {
       return (
@@ -69,7 +87,7 @@ const columns = [
 
 export default function UsersTable({ data, onChange, loading, ...props }) {
   return (
-    <div className="container py-10 mx-auto">
+    <div className="">
       <ServerDataTable
         columns={columns}
         data={data}

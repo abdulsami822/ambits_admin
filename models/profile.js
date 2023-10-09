@@ -8,7 +8,7 @@ export default class Profile {
     this.city = obj.city;
     this.prefLandhold = obj.prefLandhold;
     this.prefLocation = obj.prefLocation;
-    this.roleId = obj.roleId;
+    this.role = obj.role;
   }
 
   static keyMap = {
@@ -20,8 +20,21 @@ export default class Profile {
     city: "city",
     prefLandhold: "pref_landhold",
     prefLocation: "pref_location",
-    roleId: "role-id",
+    role: "role",
   };
+
+  static getRoleDesc() {
+    switch (this.role) {
+      case user:
+        return "User is not part of any project";
+      case customer:
+        return "User is part of atleast one project";
+      case admin:
+        return "User can access dashboard";
+      default:
+        return "";
+    }
+  }
 
   static from(obj) {
     if (!obj) return null;
@@ -34,7 +47,7 @@ export default class Profile {
       city: obj.city,
       prefLandhold: obj.pref_landhold,
       prefLocation: obj.pref_location,
-      roleId: obj.role_id,
+      role: obj.role,
     });
   }
 

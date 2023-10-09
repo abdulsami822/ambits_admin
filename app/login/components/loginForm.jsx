@@ -1,27 +1,27 @@
-'use client';
+"use client";
 
-import { useForm } from 'react-hook-form';
-import { Form } from '@/components/ui/form';
-import * as zod from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import InputField from '@/components/ui/inputField';
-import { Button } from '@/components/ui/button';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/navigation';
-import { useToast } from '@/components/ui/use-toast';
-import { ReloadIcon } from '@radix-ui/react-icons';
-import { useState } from 'react';
+import { useForm } from "react-hook-form";
+import { Form } from "@/components/ui/form";
+import * as zod from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import InputField from "@/components/ui/inputField";
+import { Button } from "@/components/ui/button";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
 
 const formSchema = zod.object({
-  email: zod.string().email('Invalid Email'),
-  password: zod.string()
+  email: zod.string().email("Invalid Email"),
+  password: zod.string(),
 });
 
 export default function LoginForm() {
   const { toast } = useToast();
   const router = useRouter();
   const form = useForm({
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
   });
   const [loading, setLoading] = useState(false);
 
@@ -31,34 +31,28 @@ export default function LoginForm() {
     try {
       setLoading(true);
       const { error, data } = await supabase.auth.signInWithPassword({
-        ...values
+        ...values,
       });
       if (error) {
         throw Error();
       }
       const { user } = data;
       if (user) {
-        const {
-          data: { role }
-        } = await supabase
-          .from('role')
-          .select()
-          .eq('user_id', user.id)
-          .single();
-        if (role !== 'admin') {
+        const { data, error } = await supabase.rpc("get_my_claims", {});
+        if (!data.claims_admin === true || error) {
           await supabase.auth.signOut();
-          throw Error();
+          throw new Error();
         }
       }
       toast({
-        title: 'Successfully Logged in'
+        title: "Successfully Logged in",
       });
-      router.replace('/');
+      router.replace("/");
     } catch (err) {
       toast({
-        title: 'Invalid credentials',
-        description: 'Please enter valid credentials',
-        variant: 'destructive'
+        title: "Invalid credentials",
+        description: "Please enter valid credentials",
+        variant: "destructive",
       });
     } finally {
       setLoading(false);

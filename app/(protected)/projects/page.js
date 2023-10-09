@@ -2,18 +2,19 @@
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Profile from "@/models/profile";
-import UserTables from "./components/UsersTable";
+// import UserTables from "./components/UsersTable";
 import useSWRMutation from "swr/mutation";
 import { useSearchParams, useRouter } from "next/navigation";
+
 import { getProfileRole } from "@/utils/supabase.utils";
-import { USERS_PAGE } from "@/constants/routes.constants";
+import { PROJECT_PAGE } from "@/constants/routes.constants";
 
 export default function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pageIndexParam = searchParams.get("page");
   if (!pageIndexParam) {
-    router.push(`${USERS_PAGE}?page=1`);
+    router.push(`${PROJECT_PAGE}?page=1`);
   }
   const supabase = createClientComponentClient();
 
@@ -67,7 +68,7 @@ export default function Page() {
 
   return (
     <div className="mx-auto">
-      <UserTables
+      {/* <UserTables
         data={profileData?.data}
         onChange={trigger}
         totalCount={profileData?.totalCount}
@@ -75,7 +76,7 @@ export default function Page() {
         initialPaginationConfig={{
           pageIndex: pageIndexParam ?? 0,
         }}
-      />
+      /> */}
     </div>
   );
 }

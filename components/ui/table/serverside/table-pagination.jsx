@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -29,7 +31,15 @@ import {
 const rowsPerPageOptions = [5, 10, 20, 50];
 
 export function DataTablePagination({ pagination }) {
-  const { pageSize, totalCount, pageIndex, setPagination } = pagination;
+  const {
+    pageSize: initialPageSize,
+    totalCount,
+    pageIndex,
+    setPagination,
+  } = pagination;
+  const pageSize = rowsPerPageOptions.includes(initialPageSize)
+    ? initialPageSize
+    : rowsPerPageOptions[0];
   const currentPageCount =
     (pageIndex + 1) * pageSize > totalCount
       ? totalCount

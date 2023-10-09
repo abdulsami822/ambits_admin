@@ -22,6 +22,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import Loader from "../../loader";
+import { StorageService } from "@/services/StorageService";
 
 /**
  *
@@ -51,7 +52,7 @@ export default function ServerDataTable({
     pageIndex: initialPaginationConfig?.pageIndex
       ? parseInt(initialPaginationConfig?.pageIndex) - 1
       : 0,
-    pageSize: 10,
+    pageSize: StorageService.getRowPerPageOption(),
   });
 
   const tablePagination = {
@@ -84,6 +85,10 @@ export default function ServerDataTable({
         sorting,
         columnFilters,
       };
+
+      if (StorageService.getRowPerPageOption() !== pagination.pageSize) {
+        StorageService.setRowPerPageOption(pagination.pageSize);
+      }
 
       if (typeof onChange === "function") onChange(tableState);
 

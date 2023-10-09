@@ -12,11 +12,10 @@ export async function middleware(req) {
   } = await supabase.auth.getUser();
 
   if (user) {
-    const {
-      data: { role },
-    } = await supabase.from("role").select().eq("user_id", user.id).single();
-    if (role !== "admin") {
+    const { data, error } = await supabase.rpc("get_my_claims", {});
+    if (!data.claims_admin === true || error) {
       await supabase.auth.signOut();
+      return NextResponse.redirect(new URL("/login", req.url));
     }
   }
 
