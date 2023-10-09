@@ -7,6 +7,7 @@ import useSWRMutation from "swr/mutation";
 import { useSearchParams, useRouter } from "next/navigation";
 import { getProfileRole } from "@/utils/supabase.utils";
 import { USERS_PAGE } from "@/constants/routes.constants";
+import { StorageService } from "@/services/StorageService";
 
 export default function Page() {
   const router = useRouter();
@@ -44,11 +45,15 @@ export default function Page() {
       const { data, count } = await supabase
         .from("profile")
         .select("*", { count: "exact" })
-        .range(offset, offset + pageSize)
+        .range(
+          offset || 0,
+          offset + pageSize || StorageService.getRowPerPageOption() || 5
+        )
         .order(Profile.keyMap[sortColumn.id], { ascending: !sortColumn.desc });
       results = data;
       totalCount = count;
     }
+    console.log(results, "res");
     results = await Promise.all(
       results.map(async (profile) => {
         const userId = profile.user_id;
@@ -64,6 +69,8 @@ export default function Page() {
     trigger,
     isMutating,
   } = useSWRMutation("profiles", onChange);
+
+  console.log(profileData, "profileData");
 
   return (
     <div className="mx-auto">

@@ -52,5 +52,5 @@ function selectStorage(useSessionStorage) {
 }
 
 function generateKey(key) {
-  return "__gg_offerwall__." + key;
+  return "_ambients_boss__" + key;
 }
