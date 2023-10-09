@@ -25,7 +25,7 @@ export default function Navbar({ className }) {
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-4 mr-8">
           {Object.entries(routes).map(([display, link]) => (
-            <Link href={link}>
+            <Link href={link} key={display}>
               <Text size="2" color="indigo">
                 {display}
               </Text>

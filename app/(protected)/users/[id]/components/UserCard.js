@@ -59,8 +59,10 @@ export default function UserCard({ user }) {
               </Text>
               {user.prefLandhold?.length ? (
                 <div className="flex items-center gap-2">
-                  {user.prefLandhold.map((hold) => (
-                    <Text size="2">{hold}</Text>
+                  {user.prefLandhold.map((hold, index) => (
+                    <Text size="2" key={index}>
+                      {hold}
+                    </Text>
                   ))}
                 </div>
               ) : (
@@ -73,8 +75,10 @@ export default function UserCard({ user }) {
               </Text>
               {user.prefLocation?.length ? (
                 <div className="flex items-center gap-2">
-                  {user.prefLocation.map((location) => (
-                    <Text size="2">{location}</Text>
+                  {user.prefLocation.map((location, index) => (
+                    <Text size="2" key={index}>
+                      {location}
+                    </Text>
                   ))}
                 </div>
               ) : (
