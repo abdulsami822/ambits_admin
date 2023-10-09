@@ -70,8 +70,6 @@ export default function Page() {
     isMutating,
   } = useSWRMutation("profiles", onChange);
 
-  console.log(profileData, "profileData");
-
   return (
     <div className="mx-auto">
       <UserTables
