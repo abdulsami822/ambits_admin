@@ -15,7 +15,7 @@ import { Text } from "@radix-ui/themes";
 import React from "react";
 
 const CreateProjectConfirmDialog = React.forwardRef(
-  ({ onSubmit, loading }, ref) => {
+  function CreateProjectConfirmDialog({ onSubmit, loading }, ref) {
     return (
       <Dialog>
         <DialogTrigger className="hidden">
