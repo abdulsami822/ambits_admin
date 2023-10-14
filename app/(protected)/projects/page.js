@@ -13,6 +13,9 @@ import {
 } from "@/constants/routes.constants";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import ProjectsTable from "./components/ProjectsTable";
+import { ProjectBasic } from "@/models/project";
+import { StorageService } from "@/services/StorageService";
 
 export default function Page() {
   const router = useRouter();
@@ -27,7 +30,7 @@ export default function Page() {
     const { pagination, sorting, columnFilters } = arg;
     const { pageIndex, pageSize } = pagination;
     if (typeof pageIndex === "number" && +pageIndexParam !== pageIndex + 1) {
-      router.push(`/users?page=${pageIndex + 1}`);
+      router.push(`${PROJECT_PAGE}?page=${pageIndex + 1}`);
     }
     const offset = pageIndex * pageSize;
     const sortColumn = sorting?.length
@@ -39,37 +42,40 @@ export default function Page() {
     if (columnFilters?.length) {
       const filterColumn = columnFilters[0];
       const { data, count } = await supabase
-        .from("profile")
+        .from("project")
         .select("*", { count: "exact" })
         .range(offset, offset + pageSize)
-        .order(Profile.keyMap[sortColumn.id], { ascending: !sortColumn.desc })
+        .order(ProjectBasic.keyMap[sortColumn.id], {
+          ascending: !sortColumn.desc,
+        })
         .ilike(filterColumn.id, `%${filterColumn.value}%`);
       results = data;
       totalCount = count;
     } else {
       const { data, count } = await supabase
-        .from("profile")
+        .from("project")
         .select("*", { count: "exact" })
-        .range(offset, offset + pageSize)
-        .order(Profile.keyMap[sortColumn.id], { ascending: !sortColumn.desc });
+        .range(
+          offset || 0,
+          offset + pageSize || StorageService.getRowPerPageOption() || 5
+        )
+        .order(ProjectBasic.keyMap[sortColumn.id], {
+          ascending: !sortColumn.desc,
+        });
       results = data;
       totalCount = count;
     }
-    results = await Promise.all(
-      results.map(async (profile) => {
-        const userId = profile.user_id;
-        const { data: role } = await getProfileRole({ supabase, userId });
-        return { ...profile, role };
-      })
-    );
-    return { data: Profile.fromAll(results), totalCount };
+
+    return { data: ProjectBasic.fromAll(results), totalCount };
   };
 
   const {
-    data: profileData,
+    data: projectsData,
     trigger,
     isMutating,
-  } = useSWRMutation("profiles", onChange);
+  } = useSWRMutation("projects", onChange);
+
+  console.log(projectsData);
 
   return (
     <div>
@@ -79,15 +85,15 @@ export default function Page() {
         </Link>
       </div>
       <div className="mx-auto">
-        {/* <UserTables
-        data={profileData?.data}
-        onChange={trigger}
-        totalCount={profileData?.totalCount}
-        loading={isMutating}
-        initialPaginationConfig={{
-          pageIndex: pageIndexParam ?? 0,
-        }}
-      /> */}
+        <ProjectsTable
+          data={projectsData?.data}
+          onChange={trigger}
+          totalCount={projectsData?.totalCount}
+          loading={isMutating}
+          initialPaginationConfig={{
+            pageIndex: pageIndexParam ?? 0,
+          }}
+        />
       </div>
     </div>
   );

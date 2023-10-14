@@ -1,22 +1,22 @@
-export class Project {
-  constructor(obj) {
-    this.basicDetails = obj.basicDetails;
-    this.agriculturalDetails = obj.agriculturalDetails;
-    this.futureDetails = obj.futureDetails;
-    this.legalDetails = obj.legalDetails;
-    this.weatherDetails = obj.weatherDetails;
-  }
-  static from(obj) {
-    if (!obj) return null;
-    return new Project({
-      basicDetails: obj.basicDetails,
-      agriculturalDetails: obj.agriculturalDetails,
-      futDevPotential: obj.futDevPotential,
-      legalDetails: obj.legalDetails,
-      weatherDetails: obj.weatherDetails,
-    });
-  }
-}
+// export class Project {
+//   constructor(obj) {
+//     this.basicDetails = obj.basicDetails;
+//     this.agriculturalDetails = obj.agriculturalDetails;
+//     this.futureDetails = obj.futureDetails;
+//     this.legalDetails = obj.legalDetails;
+//     this.weatherDetails = obj.weatherDetails;
+//   }
+//   static from(obj) {
+//     if (!obj) return null;
+//     return new Project({
+//       basicDetails: ProjectBasic.from(obj.basicDetails),
+//       agriculturalDetails: ProjectAgri.from(obj.agriculturalDetails),
+//       futDevPotential: ProjectFuture.from(obj.futDevPotential),
+//       legalDetails: ProjectLegal.from(obj.legalDetails),
+//       weatherDetails: ProjectWeather.from(obj.weatherDetails),
+//     });
+//   }
+// }
 
 export class ProjectBasic {
   constructor(obj) {
@@ -29,8 +29,9 @@ export class ProjectBasic {
     this.ticketCost = obj.ticketCost;
     this.location = obj.location;
     this.lanlat = obj.lanlat;
-    this.ameneties = obj.ameneties;
+    this.amenities = obj.amenities;
     this.benefits = obj.benefits;
+    this.createdAt = obj.createdAt;
   }
 
   static from(obj) {
@@ -47,7 +48,13 @@ export class ProjectBasic {
       lanlat: obj.lan_lat,
       amenities: obj.amenities,
       benefits: obj.benefits,
+      createdAt: obj.created_at,
     });
+  }
+
+  static fromAll(arr) {
+    if (!arr?.length) return null;
+    return arr.map(ProjectBasic.from);
   }
 
   static toHttpObject(obj) {
@@ -66,6 +73,12 @@ export class ProjectBasic {
       benefits: obj.benefits,
     };
   }
+
+  static keyMap = {
+    projectId: "project_id",
+    createdAt: "created_at",
+    noOfTickets: "no_of_tickets",
+  };
 }
 export class ProjectAgri {
   constructor(obj) {
