@@ -11,6 +11,14 @@ import { Heading, Text } from "@radix-ui/themes";
 import { Separator } from "@/components/ui/separator";
 import CreateForm from "./components/CreateForm";
 import CreateProjectConfirmDialog from "./components/CreateProjectConfirmDialog";
+import {
+  ProjectAgri,
+  ProjectBasic,
+  ProjectFuture,
+  ProjectLegal,
+  ProjectWeather,
+} from "@/models/project";
+import { PROJECT_PAGE } from "@/constants/routes.constants";
 
 const formSchema = zod.object({
   projectName: zod.string(),
@@ -21,7 +29,7 @@ const formSchema = zod.object({
   ticketCost: zod.string(),
   location: zod.string(),
   lanlat: zod.string(),
-  ameneties: zod.string(),
+  amenities: zod.string(),
   benefits: zod.string(),
   soilType: zod.string(),
   waterRights: zod.string(),
@@ -51,48 +59,78 @@ export default function Page() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      projectName: "pristine",
-      projectCost: "1 cr.",
-      landSize: "1 Acre",
-      costPerSqyd: "2500 rupees",
-      noOfTickets: 5,
-      ticketCost: "22 lacs",
-      location: "Hyderabad",
-      lanlat: "25lan 22 lon",
-      ameneties: "a,b,c,d",
-      benefits: "a,b,c,d",
-      soilType: "red soil",
-      waterRights: "no",
-      easements: "yes",
-      farmingInfra: "yes",
-      landImpCosts: "yes",
-      subsAndIncentives: "yes",
-      adjLandUse: "yes",
-      futDevPotential: "yes",
-      politicalStability: "yes",
-      resaleValue: "yes",
-      titleDeedOwnership: "yes",
-      legalTitleIssues: "yes",
-      legalEasements: "yes",
-      topography: "yes",
-      climate: "yes",
-      noiseQuality: "yes",
-      pollutionQuality: "yes",
-      envFactors: "yes",
+      // projectName: "pristine",
+      // projectCost: "1 cr.",
+      // landSize: "1 Acre",
+      // costPerSqyd: "2500 rupees",
+      // noOfTickets: 5,
+      // ticketCost: "22 lacs",
+      // location: "Hyderabad",
+      // lanlat: "25lan 22 lon",
+      // amenities: "a,b,c,d",
+      // benefits: "a,b,c,d",
+      // soilType: "red soil",
+      // waterRights: "no",
+      // easements: "yes",
+      // farmingInfra: "yes",
+      // landImpCosts: "yes",
+      // subsAndIncentives: "yes",
+      // adjLandUse: "yes",
+      // futDevPotential: "yes",
+      // politicalStability: "yes",
+      // resaleValue: "yes",
+      // titleDeedOwnership: "yes",
+      // legalTitleIssues: "yes",
+      // legalEasements: "yes",
+      // topography: "yes",
+      // climate: "yes",
+      // noiseQuality: "yes",
+      // pollutionQuality: "yes",
+      // envFactors: "yes",
     },
   });
   const [loading, setLoading] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const supabase = createClientComponentClient();
 
   async function onPreview(values) {
     setFormValues({ ...values });
-    previewBtnRef.current.click();
+    setDialogOpen(true);
   }
 
   async function onSubmit() {
     setLoading(true);
-    // const {projectName}
+
+    const projectHttpValues = {
+      ...ProjectBasic.toHttpObject({
+        ...formValues,
+        amenities: formValues.amenities.split(","),
+        benefits: formValues.benefits.split(","),
+      }),
+      ...ProjectAgri.toHttpObject(formValues),
+      ...ProjectFuture.toHttpObject(formValues),
+      ...ProjectLegal.toHttpObject(formValues),
+      ...ProjectWeather.toHttpObject(formValues),
+    };
+    const { data, error } = await supabase.rpc(
+      "create_project",
+      projectHttpValues
+    );
+    if (!error) {
+      toast({
+        title: "Project Successfully Created",
+      });
+      console.log({ data });
+      form.reset();
+      setDialogOpen(false);
+      router.push(PROJECT_PAGE);
+    } else {
+      toast({
+        title: "Unable to create project",
+        variant: "destructive",
+      });
+    }
     setLoading(false);
   }
 
@@ -107,9 +145,10 @@ export default function Page() {
 
       <CreateForm form={form} onSubmit={onPreview} />
       <CreateProjectConfirmDialog
-        ref={previewBtnRef}
         onSubmit={onSubmit}
         loading={loading}
+        open={dialogOpen}
+        setOpen={setDialogOpen}
       />
     </div>
   );

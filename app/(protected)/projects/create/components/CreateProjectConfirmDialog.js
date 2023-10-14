@@ -13,14 +13,11 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { Text } from "@radix-ui/themes";
 import React from "react";
 
-const CreateProjectConfirmDialog = React.forwardRef(function ConfirmDialog(
-  { onSubmit, loading },
-  ref
-) {
+const CreateProjectConfirmDialog = ({ onSubmit, loading, open, setOpen }) => {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="hidden">
-        <Button ref={ref}>open</Button>
+        <Button>open</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -46,6 +43,6 @@ const CreateProjectConfirmDialog = React.forwardRef(function ConfirmDialog(
       </DialogContent>
     </Dialog>
   );
-});
+};
 
 export default CreateProjectConfirmDialog;

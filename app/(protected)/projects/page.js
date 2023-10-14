@@ -7,7 +7,12 @@ import useSWRMutation from "swr/mutation";
 import { useSearchParams, useRouter } from "next/navigation";
 
 import { getProfileRole } from "@/utils/supabase.utils";
-import { PROJECT_PAGE } from "@/constants/routes.constants";
+import {
+  CREATE_PROJECT_PAGE,
+  PROJECT_PAGE,
+} from "@/constants/routes.constants";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   const router = useRouter();
@@ -67,8 +72,14 @@ export default function Page() {
   } = useSWRMutation("profiles", onChange);
 
   return (
-    <div className="mx-auto">
-      {/* <UserTables
+    <div>
+      <div className="flex justify-end">
+        <Link href={CREATE_PROJECT_PAGE}>
+          <Button>Create Project</Button>
+        </Link>
+      </div>
+      <div className="mx-auto">
+        {/* <UserTables
         data={profileData?.data}
         onChange={trigger}
         totalCount={profileData?.totalCount}
@@ -77,6 +88,7 @@ export default function Page() {
           pageIndex: pageIndexParam ?? 0,
         }}
       /> */}
+      </div>
     </div>
   );
 }
