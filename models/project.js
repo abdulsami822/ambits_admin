@@ -32,6 +32,7 @@ export class ProjectBasic {
     this.amenities = obj.amenities;
     this.benefits = obj.benefits;
     this.createdAt = obj.createdAt;
+    this.ticketsSold = obj.ticketsSold;
   }
 
   static from(obj) {
@@ -49,6 +50,7 @@ export class ProjectBasic {
       amenities: obj.amenities,
       benefits: obj.benefits,
       createdAt: obj.created_at,
+      ticketsSold: obj.tickets_sold,
     });
   }
 

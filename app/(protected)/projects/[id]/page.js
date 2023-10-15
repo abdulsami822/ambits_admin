@@ -3,18 +3,13 @@ import React from "react";
 import { cookies } from "next/headers";
 
 import {
-  Project,
   ProjectAgri,
   ProjectBasic,
   ProjectFuture,
   ProjectLegal,
   ProjectWeather,
 } from "@/models/project";
-import ProjectBasicCard from "./components/ProjectBasicCard";
-import ProjectAgriCard from "./components/ProjectAgriCard";
-import ProjectFutureCard from "./components/ProjectFutureCard";
-import ProjectLegalCard from "./components/ProjectLegalCard";
-import ProjectWeatherCard from "./components/ProjectWeatherCard";
+import ProjectAccrodion from "./components/ProjectAccrodion";
 
 async function getProjectData({ supabase, id }) {
   const { data: basicData } = await supabase
@@ -74,11 +69,13 @@ export default async function page({ params }) {
 
   return (
     <div className="space-y-4">
-      <ProjectBasicCard data={basicDetails} />
-      <ProjectAgriCard data={agriculturalDetails} />
-      <ProjectFutureCard data={futDevPotential} />
-      <ProjectLegalCard data={legalDetails} />
-      <ProjectWeatherCard data={weatherDetails} />
+      <ProjectAccrodion
+        basicDetails={basicDetails}
+        agriculturalDetails={agriculturalDetails}
+        futDevPotential={futDevPotential}
+        legalDetails={legalDetails}
+        weatherDetails={weatherDetails}
+      />
     </div>
   );
 }

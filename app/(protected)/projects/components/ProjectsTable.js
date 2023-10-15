@@ -58,13 +58,30 @@ const columns = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          No. of Tickets
+          Tickets
           <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
     cell: (info) => {
       return <div>{info.getValue() || "N/A"}</div>;
+    },
+  },
+  {
+    accessorKey: "ticketsSold",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Tickets Sold
+          <ArrowUpDown className="w-4 h-4 ml-2" />
+        </Button>
+      );
+    },
+    cell: (info) => {
+      return <div>{info.getValue()}</div>;
     },
   },
   {

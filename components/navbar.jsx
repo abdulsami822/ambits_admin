@@ -10,7 +10,6 @@ import { Text } from "@radix-ui/themes";
 const routes = {
   users: `${USERS_PAGE}?page=1`,
   projects: `${PROJECT_PAGE}?page=1`,
-  properties: `${PROJECT_PAGE}?page=1`,
 };
 
 export default function Navbar({ className }) {

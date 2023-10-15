@@ -53,7 +53,6 @@ export default function Page() {
       results = data;
       totalCount = count;
     }
-    console.log(results, "res");
     results = await Promise.all(
       results.map(async (profile) => {
         const userId = profile.user_id;

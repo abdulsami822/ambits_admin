@@ -121,7 +121,6 @@ export default function Page() {
       toast({
         title: "Project Successfully Created",
       });
-      console.log({ data });
       form.reset();
       setDialogOpen(false);
       router.push(PROJECT_PAGE);

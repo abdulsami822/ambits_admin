@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
+  // DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -16,12 +16,9 @@ import React from "react";
 const CreateProjectConfirmDialog = ({ onSubmit, loading, open, setOpen }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="hidden">
-        <Button>open</Button>
-      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+          <DialogTitle>Are you absolutely sure?</DialogTitle>
           <DialogDescription>
             <Text color="tomato">
               This action will create a new project that can be seen by end
@@ -32,9 +29,9 @@ const CreateProjectConfirmDialog = ({ onSubmit, loading, open, setOpen }) => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <DialogClose>
+          {/* <DialogClose>
             <Button variant="secondary">cancel</Button>
-          </DialogClose>
+          </DialogClose> */}
           <Button onClick={onSubmit} disabled={loading}>
             {loading && <ReloadIcon className="w-4 h-4 mr-2 animate-spin" />}
             Create project

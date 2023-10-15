@@ -1,12 +1,9 @@
 "use client";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import Profile from "@/models/profile";
-// import UserTables from "./components/UsersTable";
 import useSWRMutation from "swr/mutation";
 import { useSearchParams, useRouter } from "next/navigation";
 
-import { getProfileRole } from "@/utils/supabase.utils";
 import {
   CREATE_PROJECT_PAGE,
   PROJECT_PAGE,
@@ -74,8 +71,6 @@ export default function Page() {
     trigger,
     isMutating,
   } = useSWRMutation("projects", onChange);
-
-  console.log(projectsData);
 
   return (
     <div>
