@@ -28,7 +28,7 @@ export default function ProjectImages({ projectId }) {
       const imageDataWithLinks = await Promise.all(
         imageData.map(async (img) => {
           const { path } = img;
-          const { data, error } = await supabase.storage
+          const { data } = await supabase.storage
             .from("images")
             .createSignedUrl(path, 3600);
           return {
@@ -85,11 +85,37 @@ export default function ProjectImages({ projectId }) {
       .eq("id", id);
     if (error) {
       toast({
-        title: "Unable to update status",
+        title: "Unable to update status, please try again",
         variant: "destructive",
       });
       return;
     }
+    setTrigger(uuid());
+  };
+
+  const deleteImage = async ({ id, path }) => {
+    const { error } = await supabase.storage.from("images").remove([path]);
+    if (error) {
+      toast({
+        title: "Unable to delete image, please try again",
+        variant: "destructive",
+      });
+      return;
+    }
+    const { error: deleteError } = await supabase
+      .from("project_images")
+      .delete()
+      .eq("id", id);
+    if (deleteError) {
+      toast({
+        title: "Unable to delete image, please try again",
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({
+      title: "Deleted image",
+    });
     setTrigger(uuid());
   };
 
@@ -118,7 +144,7 @@ export default function ProjectImages({ projectId }) {
               </div>
             ) : (
               <div className="flex flex-wrap gap-4">
-                {images.map(({ id, isPrimary, url }) => (
+                {images.map(({ id, isPrimary, path, url }) => (
                   <div className="relative">
                     <div className="absolute top-0 right-0 flex items-center gap-2 p-2 bg-slate-600">
                       <Label htmlFor="primary" className="">
@@ -131,10 +157,13 @@ export default function ProjectImages({ projectId }) {
                         }}
                         id="primary"
                       />
-                      {/* <TrashIcon
+                      <TrashIcon
                         color="red"
                         className="w-5 h-5 ml-2 cursor-pointer"
-                      /> */}
+                        onClick={() => {
+                          deleteImage({ id, path });
+                        }}
+                      />
                     </div>
                     <img key={id} src={url} className="h-72" />
                   </div>
