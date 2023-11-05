@@ -10,6 +10,8 @@ import {
   ProjectWeather,
 } from "@/models/project";
 import ProjectAccrodion from "./components/ProjectAccrodion";
+import ProjectImages from "./components/ProjectImages";
+import { Text } from "@radix-ui/themes";
 
 async function getProjectData({ supabase, id }) {
   const { data: basicData } = await supabase
@@ -68,14 +70,20 @@ export default async function page({ params }) {
   } = await getProjectData({ supabase, id });
 
   return (
-    <div className="space-y-4">
-      <ProjectAccrodion
-        basicDetails={basicDetails}
-        agriculturalDetails={agriculturalDetails}
-        futDevPotential={futDevPotential}
-        legalDetails={legalDetails}
-        weatherDetails={weatherDetails}
-      />
+    <div className="space-y-6">
+      <div>
+        <Text size="5" className="capitalize " weight={"bold"}>
+          {basicDetails.name}
+        </Text>
+        <ProjectAccrodion
+          basicDetails={basicDetails}
+          agriculturalDetails={agriculturalDetails}
+          futDevPotential={futDevPotential}
+          legalDetails={legalDetails}
+          weatherDetails={weatherDetails}
+        />
+      </div>
+      <ProjectImages projectId={id} />
     </div>
   );
 }

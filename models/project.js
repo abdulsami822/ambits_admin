@@ -199,3 +199,30 @@ export class ProjectWeather {
     };
   }
 }
+
+export class ProjectImage {
+  constructor(obj) {
+    this.createdAt = obj.createdAt;
+    this.id = obj.id;
+    this.path = obj.path;
+    this.projectId = obj.projectId;
+    this.isPrimary = obj.isPrimary;
+    this.url = obj.url;
+  }
+
+  static from(obj) {
+    if (!obj) return null;
+    return new ProjectImage({
+      createdAt: obj.created_at,
+      id: obj.id,
+      path: obj.path,
+      projectId: obj.project_id,
+      isPrimary: obj.is_primary,
+      url: obj.url,
+    });
+  }
+
+  static fromAll(arr) {
+    return arr.map(ProjectImage.from);
+  }
+}

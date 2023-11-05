@@ -18,7 +18,7 @@ export default function ProjectAccrodion({
       <AccordionItem value="item-1">
         <AccordionTrigger>
           <div className="flex items-center justify-between capitalize">
-            <Text size="4">{basicDetails.name}</Text>
+            <Text size="4">Basic Details</Text>
           </div>
         </AccordionTrigger>
         <AccordionContent>
