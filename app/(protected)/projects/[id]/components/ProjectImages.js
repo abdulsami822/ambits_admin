@@ -119,6 +119,8 @@ export default function ProjectImages({ projectId }) {
     setTrigger(uuid());
   };
 
+  //console.log('')
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
