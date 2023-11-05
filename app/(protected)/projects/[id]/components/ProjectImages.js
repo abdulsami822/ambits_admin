@@ -145,7 +145,7 @@ export default function ProjectImages({ projectId }) {
             ) : (
               <div className="flex flex-wrap gap-4">
                 {images.map(({ id, isPrimary, path, url }) => (
-                  <div className="relative">
+                  <div className="relative" key={id}>
                     <div className="absolute top-0 right-0 flex items-center gap-2 p-2 bg-slate-600">
                       <Label htmlFor="primary" className="">
                         Primary
@@ -165,7 +165,7 @@ export default function ProjectImages({ projectId }) {
                         }}
                       />
                     </div>
-                    <img key={id} src={url} className="h-72" />
+                    <img src={url} className="h-72" />
                   </div>
                 ))}
               </div>
