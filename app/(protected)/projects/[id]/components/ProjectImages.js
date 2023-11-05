@@ -16,7 +16,7 @@ export default function ProjectImages({ projectId }) {
   const supabase = createClientComponentClient();
   const inputRef = useRef();
   const [trigger, setTrigger] = useState();
-  const [images, setImages] = useState();
+  // const [images, setImages] = useState();
 
   useEffect(() => {
     async function getImages() {
